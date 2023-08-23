@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   app:
+    container_name: app_container
     build:
       context: .
       args:
@@ -23,6 +24,7 @@ services:
       - db
 
   db:
+    container_name: pg_container
     image: postgres:13-alpine
     volumes:
       - dev-db-data:/var/lib/postgresql/data
@@ -30,6 +32,15 @@ services:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
 
 volumes:
   dev-db-data:
